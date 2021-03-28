@@ -10,24 +10,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
-
+	
 public class tests 
 {	
-	static toolRental tr = new toolRental();
-	
-	public static void main(String[] args) throws Exception
-	{
-		printRentalAgreementTest();
-		getDueDateTest();
-		getPreDisountChargeTest();
-		isFourthOfJulyTest();
-		isFirstMondayOfSeptemberTest();
-		getDiscountAmountTest();
-		getFinalChargeTest();
-	}
+	toolRental tr = new toolRental();
 	
 	@Test
-	public static void printRentalAgreementTest() throws Exception
+	public void printRentalAgreementTest() throws Exception
 	{
 		try
 		{
@@ -47,7 +36,7 @@ public class tests
 	}
 	
 	@Test
-	public static void getDueDateTest()
+	public void getDueDateTest()
 	{
 		assertEquals(tr.getDueDate(Tool.JAKR, "9/3/15", 5), "9/8/15");
 		assertEquals(tr.getDueDate(Tool.LADW, "7/2/20", 3), "7/5/20");
@@ -58,7 +47,7 @@ public class tests
 	}
 	
 	@Test
-	public static void getPreDisountChargeTest()
+	public void getPreDisountChargeTest()
 	{
 		double preDiscountTotal1 = tr.getPreDisountCharge(Tool.JAKR, "9/3/15", 5);
 		assertEquals(String.format("%.2f",preDiscountTotal1), "14.95");
@@ -80,7 +69,7 @@ public class tests
 	}
 	
 	@Test
-	public static void isFourthOfJulyTest() throws ParseException
+	public void isFourthOfJulyTest() throws ParseException
 	{
 		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy");
 		Date date1 = formatter.parse("7/4/21");//Sunday July 4th = true
@@ -94,7 +83,7 @@ public class tests
 	}
 	
 	@Test
-	public static void isFirstMondayOfSeptemberTest() throws ParseException
+	public void isFirstMondayOfSeptemberTest() throws ParseException
 	{
 		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy");
 		Date date1 = formatter.parse("9/6/21");//true
@@ -104,7 +93,7 @@ public class tests
 	}
 	
 	@Test
-	public static void getDiscountAmountTest() throws Exception
+	public void getDiscountAmountTest() throws Exception
 	{
 		double discountAmount1 = tr.getDiscountAmount(14.95, 10);
 		assertEquals(String.format("%.2f",discountAmount1), "1.50");
@@ -126,7 +115,7 @@ public class tests
 	}
 	
 	@Test
-	public static void getFinalChargeTest() throws Exception
+	public void getFinalChargeTest() throws Exception
 	{
 		double preDiscountTotal1 = tr.getPreDisountCharge(Tool.JAKR, "9/3/15", 5);
 		double preDiscountTotal2 = tr.getPreDisountCharge(Tool.LADW, "7/2/20", 3);
