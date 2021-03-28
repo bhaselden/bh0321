@@ -25,8 +25,9 @@ public class toolRental
 		sb.append("Check out date: " + checkoutDate + "\n");
 		sb.append("Due date: " + getDueDate(tool, checkoutDate, rentalDayCount) + "\n");
 		sb.append("Daily rental charge: " + tool.getDailyCharge() + "\n");
-		sb.append("Charge days: " + rentalDayCount + "\n");
-		double preDiscountTotal = getPreDisountCharge(tool, checkoutDate, rentalDayCount);
+		int chargeDays = getChargeDays(tool, checkoutDate, rentalDayCount);
+		sb.append("Charge days: " + chargeDays + "\n");
+		double preDiscountTotal = getPreDisountCharge(tool, chargeDays);
 		sb.append("Pre-discount charge: $" + String.format("%.2f", preDiscountTotal) + "\n");
 		sb.append("Discount percent: " + discountPerecent + "%\n");
 		double discountAmount = getDiscountAmount(preDiscountTotal, discountPerecent);
@@ -38,7 +39,7 @@ public class toolRental
 	
 	public String getDueDate(Tool tool, String checkoutDate, int rentalDays) 
 	{
-		//Calculated from checkout date and rental days.
+		//convert String checkout date to date format
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy");
 		try{
@@ -50,16 +51,14 @@ public class toolRental
 		return dueDateStr;
 	}
 	
-	public double getPreDisountCharge(Tool tool, String checkoutDate, int rentalDays)
+	public int getChargeDays(Tool tool, String checkoutDate, int rentalDays)
 	{
-		//Calculated from checkout date and rental days. charge days X daily charge
 		//Get rental date information
 		boolean includeWeekdays = tool.weekdayCharge();
 		boolean includeWeekends = tool.weekendCharge();
 		boolean includeHolidays = tool.holidayCharge();
-		double dailyCharge = tool.getDailyCharge();
-		double total = 0;
 		
+		//convert String checkout date to date format
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy");
 		Date date = null;
@@ -69,8 +68,9 @@ public class toolRental
 			c.setTime(date);
 		}catch(ParseException pe){pe.printStackTrace();}
 		
+		//add days to checkout date to get to due date
 		int days = 0;
-		while(days != rentalDays)
+		while(rentalDays > 0)
 		{
 			int day = c.get(Calendar.DAY_OF_WEEK);
 			if(
@@ -78,13 +78,18 @@ public class toolRental
 				(includeWeekdays && (day != Calendar.SATURDAY && day != Calendar.SUNDAY)) ||
 				(includeWeekends && (day == Calendar.SATURDAY || day == Calendar.SUNDAY)))
 			{
-				total = total + tool.getDailyCharge();
 				days++;
 			}
-			
+			rentalDays--;
 			c.add(Calendar.DATE, 1);
 		}
-		return total;
+		return days;
+	}
+	
+	public double getPreDisountCharge(Tool tool, int chargeDays)
+	{
+		double dailyCharge = tool.getDailyCharge();
+		return dailyCharge * chargeDays;
 	}
 	
 	public boolean isFourthOfJuly(Date date)
