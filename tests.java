@@ -38,7 +38,6 @@ public class tests
 	@Test
 	public void getDueDateTest()
 	{
-		assertEquals(tr.getDueDate(Tool.JAKR, "9/3/15", 5), "9/8/15");
 		assertEquals(tr.getDueDate(Tool.LADW, "7/2/20", 3), "7/5/20");
 		assertEquals(tr.getDueDate(Tool.CHNS, "7/2/15", 5), "7/7/15");
 		assertEquals(tr.getDueDate(Tool.JAKD, "9/3/15", 6), "9/9/15");
@@ -47,25 +46,41 @@ public class tests
 	}
 	
 	@Test
+	public void getChargeDaysTest()
+	{
+		int chargeDays1 = tr.getChargeDays(Tool.LADW, "7/2/20", 3);
+		assertEquals(chargeDays1, 3);
+
+		int chargeDays2 = tr.getChargeDays(Tool.CHNS, "7/2/15", 5);
+		assertEquals(chargeDays2, 3);
+		
+		int chargeDays3 = tr.getChargeDays(Tool.JAKD, "9/3/15", 6);
+		assertEquals(chargeDays3, 4);
+		
+		int chargeDays4 = tr.getChargeDays(Tool.JAKR, "7/2/15", 9);
+		assertEquals(chargeDays4, 7);
+		
+		int chargeDays5 = tr.getChargeDays(Tool.JAKR, "7/2/20", 4);
+		assertEquals(chargeDays5, 2);
+	}
+	
+	@Test
 	public void getPreDisountChargeTest()
 	{
-		double preDiscountTotal1 = tr.getPreDisountCharge(Tool.JAKR, "9/3/15", 5);
-		assertEquals(String.format("%.2f",preDiscountTotal1), "14.95");
-		
-		double preDiscountTotal2 = tr.getPreDisountCharge(Tool.LADW, "7/2/20", 3);
-		assertEquals(String.format("%.2f",preDiscountTotal2), "5.97");
+		double preDiscountTotal1 = tr.getPreDisountCharge(Tool.LADW, 3);
+		assertEquals(String.format("%.2f",preDiscountTotal1), "5.97");
 
-		double preDiscountTotal3 = tr.getPreDisountCharge(Tool.CHNS, "7/2/15", 5);
-		assertEquals(String.format("%.2f",preDiscountTotal3), "7.45");
+		double preDiscountTotal2 = tr.getPreDisountCharge(Tool.CHNS, 3);
+		assertEquals(String.format("%.2f",preDiscountTotal2), "4.47");
 		
-		double preDiscountTotal4 = tr.getPreDisountCharge(Tool.JAKD, "9/3/15", 6);
-		assertEquals(String.format("%.2f",preDiscountTotal4), "17.94");
+		double preDiscountTotal3 = tr.getPreDisountCharge(Tool.JAKD, 4);
+		assertEquals(String.format("%.2f",preDiscountTotal3), "11.96");
 		
-		double preDiscountTotal5 = tr.getPreDisountCharge(Tool.JAKR, "7/2/15", 9);
-		assertEquals(String.format("%.2f",preDiscountTotal5), "26.91");
+		double preDiscountTotal4 = tr.getPreDisountCharge(Tool.JAKR, 7);
+		assertEquals(String.format("%.2f",preDiscountTotal4), "20.93");
 		
-		double preDiscountTotal6 = tr.getPreDisountCharge(Tool.JAKR, "7/2/20", 4);
-		assertEquals(String.format("%.2f",preDiscountTotal6), "11.96");
+		double preDiscountTotal5 = tr.getPreDisountCharge(Tool.JAKR, 2);
+		assertEquals(String.format("%.2f",preDiscountTotal5), "5.98");
 	}
 	
 	@Test
@@ -95,47 +110,41 @@ public class tests
 	@Test
 	public void getDiscountAmountTest() throws Exception
 	{
-		double discountAmount1 = tr.getDiscountAmount(14.95, 10);
-		assertEquals(String.format("%.2f",discountAmount1), "1.50");
-		
-		double discountAmount2 = tr.getDiscountAmount(5.97, 10);
-		assertEquals(String.format("%.2f",discountAmount2), "0.60");
+		double discountAmount1 = tr.getDiscountAmount(5.97, 10);
+		assertEquals(String.format("%.2f",discountAmount1), "0.60");
 
-		double discountAmount3 = tr.getDiscountAmount(7.45, 25);
-		assertEquals(String.format("%.2f",discountAmount3), "1.86");
+		double discountAmount2 = tr.getDiscountAmount(4.47, 25);
+		assertEquals(String.format("%.2f",discountAmount2), "1.12");
 		
-		double discountAmount4 = tr.getDiscountAmount(17.94, 0);
+		double discountAmount3 = tr.getDiscountAmount(11.96, 0);
+		assertEquals(String.format("%.2f",discountAmount3), "0.00");
+		
+		double discountAmount4 = tr.getDiscountAmount(20.93, 0);
 		assertEquals(String.format("%.2f",discountAmount4), "0.00");
 		
-		double discountAmount5 = tr.getDiscountAmount(26.91, 0);
-		assertEquals(String.format("%.2f",discountAmount5), "0.00");
-		
-		double discountAmount6 = tr.getDiscountAmount(11.96, 50);
-		assertEquals(String.format("%.2f",discountAmount6), "5.98");
+		double discountAmount5 = tr.getDiscountAmount(5.98, 50);
+		assertEquals(String.format("%.2f",discountAmount5), "2.99");
 	}
 	
 	@Test
 	public void getFinalChargeTest() throws Exception
 	{
-		double preDiscountTotal1 = tr.getPreDisountCharge(Tool.JAKR, "9/3/15", 5);
-		double preDiscountTotal2 = tr.getPreDisountCharge(Tool.LADW, "7/2/20", 3);
-		double preDiscountTotal3 = tr.getPreDisountCharge(Tool.CHNS, "7/2/15", 5);
-		double preDiscountTotal4 = tr.getPreDisountCharge(Tool.JAKD, "9/3/15", 6);
-		double preDiscountTotal5 = tr.getPreDisountCharge(Tool.JAKR, "7/2/15", 9);
-		double preDiscountTotal6 = tr.getPreDisountCharge(Tool.JAKR, "7/2/20", 4);
+		double preDiscountTotal1 = tr.getPreDisountCharge(Tool.LADW, 3);
+		double preDiscountTotal2 = tr.getPreDisountCharge(Tool.CHNS, 3);
+		double preDiscountTotal3 = tr.getPreDisountCharge(Tool.JAKD, 4);
+		double preDiscountTotal4 = tr.getPreDisountCharge(Tool.JAKR, 7);
+		double preDiscountTotal5 = tr.getPreDisountCharge(Tool.JAKR, 2);
 		
-		double discountAmount1 = tr.getDiscountAmount(14.95, 10);
-		double discountAmount2 = tr.getDiscountAmount(5.97, 10);
-		double discountAmount3 = tr.getDiscountAmount(7.45, 25);
-		double discountAmount4 = tr.getDiscountAmount(17.94, 0);
-		double discountAmount5 = tr.getDiscountAmount(26.91, 0);
-		double discountAmount6 = tr.getDiscountAmount(11.96, 50);
+		double discountAmount1 = tr.getDiscountAmount(5.97, 10);
+		double discountAmount2 = tr.getDiscountAmount(4.47, 25);
+		double discountAmount3 = tr.getDiscountAmount(11.96, 0);
+		double discountAmount4 = tr.getDiscountAmount(20.93, 0);
+		double discountAmount5 = tr.getDiscountAmount(5.98, 50);
 		
-		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal1,discountAmount1)),"13.46");
-		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal2,discountAmount2)),"5.37");
-		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal3,discountAmount3)),"5.59");
-		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal4,discountAmount4)),"17.94");
-		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal5,discountAmount5)),"26.91");
-		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal6,discountAmount6)),"5.98");
+		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal1,discountAmount1)),"5.37");
+		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal2,discountAmount2)),"3.35");
+		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal3,discountAmount3)),"11.96");
+		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal4,discountAmount4)),"20.93");
+		assertEquals(String.format("%.2f",tr.getFinalCharge(preDiscountTotal5,discountAmount5)),"2.99");
 	}
 }
