@@ -38,7 +38,7 @@ public class toolRental
 	
 	public String getDueDate(Tool tool, String checkoutDate, int rentalDays) 
 	{
-		//convert String checkout date to date format
+		//Calculated from checkout date and rental days.
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy");
 		try{
@@ -60,7 +60,6 @@ public class toolRental
 		double dailyCharge = tool.getDailyCharge();
 		double total = 0;
 		
-		//convert String checkout date to date format
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy");
 		Date date = null;
@@ -70,7 +69,6 @@ public class toolRental
 			c.setTime(date);
 		}catch(ParseException pe){pe.printStackTrace();}
 		
-		//add days to checkout date to get due date
 		int days = 0;
 		while(days != rentalDays)
 		{
